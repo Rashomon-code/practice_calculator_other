@@ -4,7 +4,7 @@
 
 int get_input(double *num1, double *num2, char *op){
     char buffer[BUFFER_SIZE];
-    int check = 0;
+    int check = 0, check_ch = 0;
     char tmp;
 
     for(;;){
@@ -26,9 +26,14 @@ int get_input(double *num1, double *num2, char *op){
             continue;
         }
 
-        check = sscanf(buffer, "%lf %c %lf", num1, &tmp, num2);
+        check = sscanf(buffer, "%lf %c %lf %n", num1, &tmp, num2, &check_ch);
         if(check != 3){
             fprintf(stderr, "ERROR: Invalid format.");
+            continue;
+        }
+
+        if(buffer[check_ch] != '\0' && buffer[check_ch] != '\n'){
+            fprintf(stderr, "ERROR: Junk characters found at the end of input.\n");
             continue;
         }
 
